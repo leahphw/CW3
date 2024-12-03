@@ -1,109 +1,124 @@
-– MySQL
-
+-- Create a new database
 CREATE DATABASE NHSDatabase;
 
-use NHSDatabase;
+-- Use the newly created database
+USE NHSDatabase;
 
+-- Table to store administrative staff information
 CREATE TABLE AdminStaff (
-	Id INT AUTO_INCREMENT PRIMARY KEY,
-	FirstName VARCHAR(40),
-LastName VARCHAR(40),
-Position VARCHAR(40)
+    Id INT AUTO_INCREMENT PRIMARY KEY, -- Unique ID for each admin staff
+    FirstName VARCHAR(40),             -- Admin staff's first name
+    LastName VARCHAR(40),              -- Admin staff's last name
+    Position VARCHAR(40)               -- Job position of the admin staff
 );
 
+-- Table to store countries
 CREATE TABLE Country (
-	Id INT AUTO_INCREMENT PRIMARY KEY,
-	Name VARCHAR(40) NOT NULL
+    Id INT AUTO_INCREMENT PRIMARY KEY, -- Unique ID for each country
+    Name VARCHAR(40) NOT NULL          -- Name of the country
 );
 
+-- Table to store counties within countries
 CREATE TABLE County (
-	Id INT AUTO_INCREMENT PRIMARY KEY,
-	Name VARCHAR(40) NOT NULL,
-	CountryID INT NOT NULL,
-	FOREIGN KEY (CountryID) REFERENCES Country(Id) ON DELETE RESTRICT
-	);
+    Id INT AUTO_INCREMENT PRIMARY KEY, -- Unique ID for each county
+    Name VARCHAR(40) NOT NULL,         -- Name of the county
+    CountryID INT NOT NULL,            -- ID of the associated country
+    FOREIGN KEY (CountryID) REFERENCES Country(Id) ON DELETE RESTRICT
+);
 
+-- Table to store districts within counties
 CREATE TABLE District (
-	Id INT AUTO_INCREMENT PRIMARY KEY,
-	Name VARCHAR(40) NOT NULL,
-	CountyID INT NOT NULL,
-	FOREIGN KEY (CountyID) REFERENCES County(Id) ON DELETE RESTRICT
-	);
+    Id INT AUTO_INCREMENT PRIMARY KEY, -- Unique ID for each district
+    Name VARCHAR(40) NOT NULL,         -- Name of the district
+    CountyID INT NOT NULL,             -- ID of the associated county
+    FOREIGN KEY (CountyID) REFERENCES County(Id) ON DELETE RESTRICT
+);
 
+-- Table to store hospital information
 CREATE TABLE Hospital (
-	Id INT AUTO_INCREMENT PRIMARY KEY,
-	Name VARCHAR(156) NOT NULL,
-	DistrictID INT NOT NULL,
-	MaximumCapacity INT NOT NULL,
-	FOREIGN KEY (DistrictID) REFERENCES District(Id) ON DELETE RESTRICT
-	);
+    Id INT AUTO_INCREMENT PRIMARY KEY, -- Unique ID for each hospital
+    Name VARCHAR(156) NOT NULL,        -- Name of the hospital
+    DistrictID INT NOT NULL,           -- ID of the associated district
+    MaximumCapacity INT NOT NULL,      -- Maximum capacity of the hospital
+    FOREIGN KEY (DistrictID) REFERENCES District(Id) ON DELETE RESTRICT
+);
 
+-- Table to store minister statements
 CREATE TABLE MinisterStatement (
-	Id INT AUTO_INCREMENT PRIMARY KEY,
-	MinisterName VARCHAR(40),
-	IssueType VARCHAR(40),
-	Statement LONGTEXT,
-	CountryId INT NOT NULL,
-	FOREIGN KEY (CountryId) REFERENCES Country(Id)
+    Id INT AUTO_INCREMENT PRIMARY KEY, -- Unique ID for each statement
+    MinisterName VARCHAR(40),          -- Name of the minister issuing the statement
+    IssueType VARCHAR(40),             -- Type of issue the statement addresses
+    Statement LONGTEXT,                -- Full statement text
+    CountryId INT NOT NULL,            -- ID of the associated country
+    FOREIGN KEY (CountryId) REFERENCES Country(Id)
 );
 
+-- Table to store patient information
 CREATE TABLE Patient (
-	Id INT AUTO_INCREMENT PRIMARY KEY,
-	FirstName VARCHAR(40),
-	LastName VARCHAR(40),
-	DistrictId INT NOT NULL,
-	FOREIGN KEY (DistrictId) REFERENCES District(Id),
-	Postcode VARCHAR(10),
-	PhoneNo VarChar(20),
-	Address VarChar(50),
-	Gender VarChar(10)
+    Id INT AUTO_INCREMENT PRIMARY KEY, -- Unique ID for each patient
+    FirstName VARCHAR(40),             -- Patient's first name
+    LastName VARCHAR(40),              -- Patient's last name
+    DistrictId INT NOT NULL,           -- ID of the associated district
+    Postcode VARCHAR(10),              -- Patient's postcode
+    PhoneNo VARCHAR(20),               -- Patient's phone number
+    Address VARCHAR(50),               -- Patient's address
+    Gender VARCHAR(10),                -- Patient's gender
+    FOREIGN KEY (DistrictId) REFERENCES District(Id)
 );
 
+-- Table to store patient records
 CREATE TABLE PatientRecord (
-	Id INT AUTO_INCREMENT PRIMARY KEY,
-	PatientId INT NOT NULL,
-	FOREIGN KEY (PatientId) REFERENCES Patient(Id),
-	DateOfAppointment DATE,
-	HospitalId INT NOT NULL,
-	FOREIGN KEY (HospitalId) REFERENCES Hospital(Id),
-	Reason VARCHAR(255),
-	Notes VARCHAR(255),
-	Tests VARCHAR(255),
-	Admitted BOOLEAN
+    Id INT AUTO_INCREMENT PRIMARY KEY, -- Unique ID for each record
+    PatientId INT NOT NULL,            -- ID of the associated patient
+    DateOfAppointment DATE,            -- Date of the appointment
+    HospitalId INT NOT NULL,           -- ID of the hospital where the appointment occurred
+    Reason VARCHAR(255),               -- Reason for the appointment
+    Notes VARCHAR(255),                -- Additional notes about the appointment
+    Tests VARCHAR(255),                -- Tests conducted during the appointment
+    Admitted BOOLEAN,                  -- Whether the patient was admitted
+    FOREIGN KEY (PatientId) REFERENCES Patient(Id),
+    FOREIGN KEY (HospitalId) REFERENCES Hospital(Id)
 );
 
+-- Table to store appointment information
 CREATE TABLE Appointment (
-Id INT AUTO_INCREMENT PRIMARY KEY, 
-PatientId INT NOT NULL, 
-HospitalId INT NOT NULL, 
-Date DATE NOT NULL,
-Reason VARCHAR(255), 
-FOREIGN KEY (PatientId) REFERENCES Patient(Id) ON DELETE CASCADE, FOREIGN KEY (HospitalId) REFERENCES Hospital(Id) ON DELETE CASCADE
+    Id INT AUTO_INCREMENT PRIMARY KEY, -- Unique ID for each appointment
+    PatientId INT NOT NULL,            -- ID of the associated patient
+    HospitalId INT NOT NULL,           -- ID of the hospital where the appointment is scheduled
+    Date DATE NOT NULL,                -- Appointment date
+    Reason VARCHAR(255),               -- Reason for the appointment
+    FOREIGN KEY (PatientId) REFERENCES Patient(Id) ON DELETE CASCADE,
+    FOREIGN KEY (HospitalId) REFERENCES Hospital(Id) ON DELETE CASCADE
 );
 
-CREATE TABLE WaitingListAppointment(
-	Id INT AUTO_INCREMENT PRIMARY KEY,	
-WaitingListId INT, 
-AppointmentId INT NOT NULL UNIQUE, 
-FOREIGN KEY (AppointmentId) REFERENCES Appointment(Id) ON DELETE CASCADE
+-- Table to link appointments with waiting list entries
+CREATE TABLE WaitingListAppointment (
+    Id INT AUTO_INCREMENT PRIMARY KEY, -- Unique ID for the waiting list appointment
+    WaitingListId INT,                 -- ID of the waiting list entry
+    AppointmentId INT NOT NULL UNIQUE, -- ID of the associated appointment
+    FOREIGN KEY (AppointmentId) REFERENCES Appointment(Id) ON DELETE CASCADE
 );
 
-CREATE TABLE DirectAppointment(
-	Id INT AUTO_INCREMENT PRIMARY KEY,
-	AppointmentId INT NOT NULL UNIQUE,
-	adminStaffId INT NOT NULL,
-	FOREIGN KEY (AppointmentId) REFERENCES Appointment(Id) ON DELETE CASCADE,
-	FOREIGN KEY (adminStaffId) REFERENCES AdminStaff(Id) ON DELETE RESTRICT
+-- Table to link direct appointments with admin staff
+CREATE TABLE DirectAppointment (
+    Id INT AUTO_INCREMENT PRIMARY KEY, -- Unique ID for the direct appointment
+    AppointmentId INT NOT NULL UNIQUE, -- ID of the associated appointment
+    AdminStaffId INT NOT NULL,         -- ID of the admin staff creating the appointment
+    FOREIGN KEY (AppointmentId) REFERENCES Appointment(Id) ON DELETE CASCADE,
+    FOREIGN KEY (AdminStaffId) REFERENCES AdminStaff(Id) ON DELETE RESTRICT
 );
 
+-- Table to store patients on a waiting list
 CREATE TABLE WaitingList (
-	Id INT AUTO_INCREMENT PRIMARY KEY,
-	PatientId INT NOT NULL,
-	TreatmentType VARCHAR(40),
-	DateOfEntry DATE,
-	WLAppointmentId INT,
-	FOREIGN KEY (WLAppointmentId) REFERENCES WaitingListAppointment(Id) ON DELETE CASCADE,
-	FOREIGN KEY (PatientId) REFERENCES Patient(Id)
+    Id INT AUTO_INCREMENT PRIMARY KEY, -- Unique ID for the waiting list entry
+    PatientId INT NOT NULL,            -- ID of the associated patient
+    TreatmentType VARCHAR(40),         -- Type of treatment required
+    DateOfEntry DATE,                  -- Date the patient was added to the waiting list
+    WLAppointmentId INT,               -- ID of the associated waiting list appointment
+    FOREIGN KEY (WLAppointmentId) REFERENCES WaitingListAppointment(Id) ON DELETE CASCADE,
+    FOREIGN KEY (PatientId) REFERENCES Patient(Id)
 );
 
-ALTER TABLE WaitingListAppointment ADD CONSTRAINT fk_Name FOREIGN KEY (WaitingListId) REFERENCES WaitingList(Id) ON DELETE RESTRICT;
+-- Add foreign key constraint to WaitingListAppointment
+ALTER TABLE WaitingListAppointment 
+ADD CONSTRAINT fk_Name FOREIGN KEY (WaitingListId) REFERENCES WaitingList(Id) ON DELETE RESTRICT;
