@@ -122,3 +122,65 @@ CREATE TABLE WaitingList (
 -- Add foreign key constraint to WaitingListAppointment
 ALTER TABLE WaitingListAppointment 
 ADD CONSTRAINT fk_Name FOREIGN KEY (WaitingListId) REFERENCES WaitingList(Id) ON DELETE RESTRICT;
+
+-- TODO: Patients table needs to be populated before WaitingList and Appointment (the other tables don't work right now because they can't reference PatientID)
+-- Insert data into Patients table
+
+
+-- Insert data into WaitingList table
+INSERT INTO WaitingList (PatientId, TreatmentType, DateOfEntry, WLAppointmentId)
+VALUES 
+-- TODO: allow multiple waiting list entries for 1 patient
+(1, 'Cardiology', '2024-12-01', 1),
+(2, 'Orthopedics', '2024-12-02', 2),
+(3, 'Dermatology', '2024-12-03', 3),
+(4, 'Neurology', '2024-12-04', 4),
+(5, 'Pediatrics', '2024-12-05', 5),
+(6, 'Oncology', '2024-12-06', 6),
+(7, 'Gastroenterology', '2024-12-07', 7),
+(8, 'Ophthalmology', '2024-12-08', 8),
+(9, 'Endocrinology', '2024-12-09', 9),
+(10, 'Pulmonology', '2024-12-10', 10);
+
+-- Insert data into Appointment table
+INSERT INTO Appointment (PatientId, HospitalId, Date, Reason)
+VALUES 
+-- TODO: allow multiple appointments for 1 patient
+(1, 1, '2024-12-15', 'Follow-up check'),
+(2, 1, '2024-12-16', 'Initial consultation'),
+(3, 2, '2024-12-17', 'Routine check'),
+(4, 3, '2024-12-18', 'Test results review'),
+(5, 4, '2024-12-19', 'Pre-surgery evaluation'),
+(6, 5, '2024-12-20', 'Post-surgery care'),
+(7, 6, '2024-12-21', 'Physical therapy assessment'),
+(8, 7, '2024-12-22', 'Medication review'),
+(9, 8, '2024-12-23', 'Diagnostic imaging follow-up'),
+(10, 9, '2024-12-24', 'Specialist referral');
+
+-- Insert data into DirectAppointment table
+INSERT INTO DirectAppointment (AppointmentId, AdminStaffId)
+VALUES 
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
+
+-- Insert data into WaitingListAppointment table
+INSERT INTO WaitingListAppointment (WaitingListId, AppointmentId)
+VALUES 
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
