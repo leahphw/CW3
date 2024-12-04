@@ -123,7 +123,6 @@ CREATE TABLE WaitingList (
 ALTER TABLE WaitingListAppointment 
 ADD CONSTRAINT fk_Name FOREIGN KEY (WaitingListId) REFERENCES WaitingList(Id) ON DELETE RESTRICT;
 
--- TODO: Patients table needs to be populated before WaitingList and Appointment (the other tables don't work right now because they can't reference PatientID)
 -- Insert data into Patients table
 INSERT INTO Country (Name)
     VALUES
@@ -184,6 +183,52 @@ INSERT INTO MinisterStatement (MinisterName, IssueType, Statement, CountryId)
     ('Linda Blue', 'Chronic Illness Management', 'Programs for managing chronic conditions are being expanded.', 2),
     ('Thomas Gold', 'Health Technology', 'Investments in healthcare technology will improve patient outcomes.', 1),
     ('Anna Silver', 'Health Equity', 'Reducing disparities in healthcare access remains a top priority.', 3);
+
+
+-- Insert data into AdminStaff table
+INSERT INTO AdminStaff(FirstName, LastName, Position)
+    VALUES 
+    ('John', 'Doe', 'Data Clerk'),
+    ('Jane', 'Doe', 'Patient Data Coordinator'),
+    ('Sam', 'Yu', 'Database Administrator'),
+    ('Dimitrios', 'Papaoikonomou', 'Database Administrator'),
+    ('Jay', 'Xiao', 'Database Administrator'),
+    ('Leah', 'Le', 'Database Administrator'),
+    ('Thomas', 'Rochelle', 'Medical Records Officer'),
+    ('Colin', 'Bailey', 'Principal Records Officer'),
+    ('Frederik', 'Dahlqvist', 'Scheduling Coordinator'),
+    ('Keir', 'Starmer', 'System Administrator');
+
+
+-- Insert data into Patient table
+INSERT INTO Patient(FirstName, LastName, DistrictId, Postcode, PhoneNo, Address, Gender)
+    VALUES 
+    ('Emily', 'Carter', 1, 'AB12 3CD', '1234567890', '45 Oak Avenue', 'Female'),
+    ('Jack', 'Thompson', 2, 'CD34 5EF', '9876543210', '67 Maple Lane', 'Male'),
+    ('Olivia', 'Williams', 3, 'EF56 7GH', '4561237890', '89 Pine Road', 'Female'),
+    ('Liam', 'Johnson', 4, 'GH78 9IJ', '3216549870', '101 Birch Close', 'Male'),
+    ('Sophia', 'Taylor', 5, 'IJ90 1KL', '1230987654', '12 Cedar Drive', 'Female'),
+    ('Noah', 'Brown', 6, 'KL23 4MN', '7890123456', '34 Fir Grove', 'Male'),
+    ('Ava', 'Wilson', 7, 'MN45 6OP', '4567891230', '56 Spruce Lane', 'Female'),
+    ('James', 'Davis', 8, 'OP67 8QR', '2345678901', '78 Ash Court', 'Male'),
+    ('Mia', 'Miller', 9, 'QR89 0ST', '5678901234', '90 Elm Way', 'Female'),
+    ('Ethan', 'Moore', 10, 'ST12 3UV', '8901234567', '102 Willow Park', 'Male');
+
+-- Insert data into PatientRecord table
+
+INSERT INTO PatientRecord (PatientId, DateOfAppointment, HospitalId, Reason, Notes, Tests, Admitted)
+    VALUES 
+    (1, '2024-12-01', 1, 'General Checkup', 'Routine appointment, no issues.', 'Blood Test', FALSE),
+    (2, '2024-11-28', 1, 'Flu Symptoms', 'Patient reported fever and cough.', 'Influenza Test', FALSE),
+    (3, '2024-11-25', 2, 'Back Pain', 'Chronic lower back pain reported.', 'X-ray', FALSE),
+    (4, '2024-12-02', 2, 'Skin Rash', 'Possible allergic reaction.', 'Skin Biopsy', FALSE),
+    (5, '2024-12-03', 2, 'Chest Pain', 'Referred for cardiac evaluation.', 'ECG, Blood Test', TRUE),
+    (6, '2024-12-01', 4, 'Headache', 'Recurring migraines, prescribed medication.', 'CT Scan', FALSE),
+    (7, '2024-11-30', 5, 'High Blood Pressure', 'Routine follow-up for hypertension.', 'Blood Pressure Test', FALSE),
+    (8, '2024-12-02', 6, 'Leg Injury', 'Suspected fracture, further evaluation needed.', 'X-ray', FALSE),
+    (9, '2024-11-29', 7, 'Diabetes Management', 'Patient reported difficulty maintaining sugar levels.', 'Blood Sugar Test', FALSE),
+    (10, '2024-12-03', 8, 'Asthma Symptoms', 'Severe shortness of breath noted.', 'Pulmonary Function Test', TRUE);
+
 
 
 -- Insert data into WaitingList table
