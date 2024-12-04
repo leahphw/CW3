@@ -125,6 +125,65 @@ ADD CONSTRAINT fk_Name FOREIGN KEY (WaitingListId) REFERENCES WaitingList(Id) ON
 
 -- TODO: Patients table needs to be populated before WaitingList and Appointment (the other tables don't work right now because they can't reference PatientID)
 -- Insert data into Patients table
+INSERT INTO Country (Name)
+    VALUES
+    ('England'),
+    ('Scotland'),
+    ('Wales'),
+    ('Northern Ireland');
+
+INSERT INTO County (Name, CountryID)
+    VALUES
+    ('Greater London', 1),
+    ('West Midlands', 1),
+    ('Greater Manchester', 1),
+    ('Glasgow', 2),
+    ('Edinburgh', 2),
+    ('Aberdeen', 2),
+    ('Cardiff', 3),
+    ('Swansea', 3),
+    ('Antrim and Newtownabbey', 4),
+    ('Ards and North Down', 4);
+
+INSERT INTO District (Name, CountyID) 
+    VALUES 
+    ('Camden', 1),
+    ('Birmingham', 2),
+    ('Manchester City Centre', 3),
+    ('Anderston/City/Yorkhill', 4),
+    ('Leith', 5),
+    ('Torry/Ferryhill', 6),
+    ('Adamsdown', 7),
+    ('Morriston', 8),
+    ('Glengormley', 9),
+    ('Bangor', 10);  
+
+
+INSERT INTO Hospital (Name, DistrictID, MaximumCapacity)
+    VALUES 
+    ('Hospital of Camden', 1, 3000),
+    ('Hospital of Birmingham', 2, 1300),
+    ('Hospital of Manchester', 3, 3000),
+    ('Hospital of Anderston', 4, 1000),
+    ('Hospital of Leith', 5, 1300),
+    ('Hospital of Torry', 6, 2000),
+    ('Hospital of Adamsdown', 7, 1500),
+    ('Hospital of Morriston', 8, 2000),
+    ('Hospital of Glengormley', 9, 1400),
+    ('Hospital of Bangor', 10, 2100);
+
+INSERT INTO MinisterStatement (MinisterName, IssueType, Statement, CountryId) 
+    VALUES 
+    ('John Smith', 'Primary Care', 'We aim to ensure everyone has access to quality primary care services.', 1),
+    ('Jane Doe', 'Mental Health', 'Mental health support is being expanded with new programs nationwide.', 3),
+    ('Michael Brown', 'Hospital Infrastructure', 'Significant funding will be allocated to upgrade hospital facilities.', 1),
+    ('Emily White', 'Pharmaceuticals', 'We are improving access to affordable medications.', 4),
+    ('James Black', 'Medical Workforce', 'Our focus is on increasing the number of trained healthcare professionals.', 4),
+    ('Sarah Green', 'Public Health', 'Promoting preventative healthcare to reduce disease rates.', 3),
+    ('Robert Gray', 'Emergency Services', 'We are enhancing the response times and capacity of emergency services.', 2),
+    ('Linda Blue', 'Chronic Illness Management', 'Programs for managing chronic conditions are being expanded.', 2),
+    ('Thomas Gold', 'Health Technology', 'Investments in healthcare technology will improve patient outcomes.', 1),
+    ('Anna Silver', 'Health Equity', 'Reducing disparities in healthcare access remains a top priority.', 3);
 
 
 -- Insert data into WaitingList table
