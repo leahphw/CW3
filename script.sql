@@ -290,3 +290,17 @@ VALUES
 (8, 8),
 (9, 9),
 (10, 10);
+
+-- Medium Queries
+--Query that returns the most frequent appointment reasons per district
+SELECT D.Name AS DistrictName, A.Reason, COUNT(A.Id) AS ReasonCount
+    FROM District D JOIN Hospital H ON D.Id= H.DistrictID JOIN Appointment A ON H.Id = A.HospitalId
+        GROUP BY D.Id, D.Name, A.Reason ORDER BY D.Name, ReasonCount DESC;
+-- Advanced Queries
+--Query to find patients with more appointments than the average number of appointments per person
+SELECT P.FirstName, P.LastName, COUNT(A.Id) AS TotalAppointments
+    FROM Patient P JOIN Appointment A ON P.id = A.PatientId
+    GROUP BY P.id, P.FirstName, P.LastName HAVING COUNT(A.Id)>
+    SELECT AVG(TotalCount) FROM (SELECT COUNT(A1.Id) AS TotalCount
+        FROM Appointment A1 GROUP BY A1.PatientId) SubQuery);
+
