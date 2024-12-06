@@ -123,7 +123,7 @@ CREATE TABLE WaitingList (
 ALTER TABLE WaitingListAppointment 
 ADD CONSTRAINT fk_Name FOREIGN KEY (WaitingListId) REFERENCES WaitingList(Id) ON DELETE RESTRICT;
 
--- Insert data into Patients table
+-- Insert data into Country table
 INSERT INTO Country (Name)
     VALUES
     ('England'),
@@ -131,6 +131,7 @@ INSERT INTO Country (Name)
     ('Wales'),
     ('Northern Ireland');
 
+-- Insert data into County table
 INSERT INTO County (Name, CountryID)
     VALUES
     ('Greater London', 1),
@@ -144,6 +145,7 @@ INSERT INTO County (Name, CountryID)
     ('Antrim and Newtownabbey', 4),
     ('Ards and North Down', 4);
 
+-- Insert data into District table
 INSERT INTO District (Name, CountyID) 
     VALUES 
     ('Camden', 1),
@@ -157,7 +159,7 @@ INSERT INTO District (Name, CountyID)
     ('Glengormley', 9),
     ('Bangor', 10);  
 
-
+-- Insert data into Hospital table
 INSERT INTO Hospital (Name, DistrictID, MaximumCapacity)
     VALUES 
     ('Hospital of Camden', 1, 3000),
@@ -171,6 +173,7 @@ INSERT INTO Hospital (Name, DistrictID, MaximumCapacity)
     ('Hospital of Glengormley', 9, 1400),
     ('Hospital of Bangor', 10, 2100);
 
+-- Insert data into MinisterStatment table
 INSERT INTO MinisterStatement (MinisterName, IssueType, Statement, CountryId) 
     VALUES 
     ('John Smith', 'Primary Care', 'We aim to ensure everyone has access to quality primary care services.', 1),
@@ -215,7 +218,6 @@ INSERT INTO Patient(FirstName, LastName, DistrictId, Postcode, PhoneNo, Address,
     ('Ethan', 'Moore', 10, 'ST12 3UV', '8901234567', '102 Willow Park', 'Male');
 
 -- Insert data into PatientRecord table
-
 INSERT INTO PatientRecord (PatientId, DateOfAppointment, HospitalId, Reason, Notes, Tests, Admitted)
     VALUES 
     (1, '2024-12-01', 1, 'General Checkup', 'Routine appointment, no issues.', 'Blood Test', FALSE),
