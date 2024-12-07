@@ -291,11 +291,19 @@ VALUES
 (9, 9),
 (10, 10);
 
+-- Basic Queries
+-- Query to find list of patients and hospitals where they have been treated
+Select Patient.firstName as PatientFirstName, Patient.LastName as PatientLastName, Hospital.name as HospitalName
+    FROM Patient
+    JOIN Appointment ON Patient.id = Appointment.patientId
+    JOIN Hospital on Appointment.hospitalId = Hospital.id;
+
 -- Medium Queries
 --Query that returns the most frequent appointment reasons per district
 SELECT D.Name AS DistrictName, A.Reason, COUNT(A.Id) AS ReasonCount
     FROM District D JOIN Hospital H ON D.Id= H.DistrictID JOIN Appointment A ON H.Id = A.HospitalId
         GROUP BY D.Id, D.Name, A.Reason ORDER BY D.Name, ReasonCount DESC;
+
 -- Advanced Queries
 --Query to find patients with more appointments than the average number of appointments per person
 SELECT P.FirstName, P.LastName, COUNT(A.Id) AS TotalAppointments
@@ -304,3 +312,13 @@ SELECT P.FirstName, P.LastName, COUNT(A.Id) AS TotalAppointments
     SELECT AVG(TotalCount) FROM (SELECT COUNT(A1.Id) AS TotalCount
         FROM Appointment A1 GROUP BY A1.PatientId) SubQuery);
 
+-- Query to find most common reason for Hospital appointments and frequency
+SELECT Hospital.name AS HospitalName, PatientRecord.reason AS MostCommonReason, COUNT(PatientRecord.id) AS Freq
+    FROM Hospital
+    JOIN PatientRecord ON PatientRecord.hospitalId = Hospital.id
+    WHERE PatientRecord.reason = (SELECT reason
+                                    FROM PatientRecord
+                                    WHERE hospitalId = Hospital.id
+                                    GROUP BY reason
+                                    LIMIT 1)
+    GROUP BY Hospital.id, PatientRecord.reason;
