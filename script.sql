@@ -336,7 +336,7 @@ ORDER BY
 --Query to find patients with more appointments than the average number of appointments per person
 SELECT P.FirstName, P.LastName, COUNT(A.Id) AS TotalAppointments
     FROM Patient P JOIN Appointment A ON P.id = A.PatientId
-    GROUP BY P.id, P.FirstName, P.LastName HAVING COUNT(A.Id)>
+    GROUP BY P.id, P.FirstName, P.LastName HAVING COUNT(A.Id)> (
     SELECT AVG(TotalCount) FROM (SELECT COUNT(A1.Id) AS TotalCount
         FROM Appointment A1 GROUP BY A1.PatientId) SubQuery);
 
