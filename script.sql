@@ -304,6 +304,38 @@ SELECT D.Name AS DistrictName, A.Reason, COUNT(A.Id) AS ReasonCount
     FROM District D JOIN Hospital H ON D.Id= H.DistrictID JOIN Appointment A ON H.Id = A.HospitalId
         GROUP BY D.Id, D.Name, A.Reason ORDER BY D.Name, ReasonCount DESC;
 
+-- Count the number of appointments per hospital, including hospitals with no appointments
+SELECT 
+    h.Name AS HospitalName, 
+    COUNT(a.Id) AS NumberOfAppointments
+FROM 
+    Hospital h
+LEFT JOIN 
+    Appointment a ON h.Id = a.HospitalId
+GROUP BY 
+    h.Name
+ORDER BY 
+    NumberOfAppointments DESC;
+
+-- List of patients and the hospitals they visited, including those who haven't visited any hospital
+SELECT 
+    p.FirstName AS PatientFirstName,
+    p.LastName AS PatientLastName,
+    h.Name AS HospitalName,
+    a.Date AS AppointmentDate,
+    a.Reason AS AppointmentReason
+FROM 
+    Patient p
+LEFT JOIN 
+    PatientRecord pr ON p.Id = pr.PatientId
+LEFT JOIN 
+    Appointment a ON pr.Id = a.PatientId
+LEFT JOIN 
+    Hospital h ON a.HospitalId = h.Id
+ORDER BY 
+    p.LastName, p.FirstName;
+
+
 -- Advanced Queries
 --Query to find patients with more appointments than the average number of appointments per person
 SELECT P.FirstName, P.LastName, COUNT(A.Id) AS TotalAppointments
