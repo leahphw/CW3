@@ -94,7 +94,6 @@ CREATE TABLE Appointment (
 -- Table to link appointments with waiting list entries
 CREATE TABLE WaitingListAppointment (
     Id INT AUTO_INCREMENT PRIMARY KEY, -- Unique ID for the waiting list appointment
-    WaitingListId INT,                 -- ID of the waiting list entry
     AppointmentId INT NOT NULL UNIQUE, -- ID of the associated appointment
     FOREIGN KEY (AppointmentId) REFERENCES Appointment(Id) ON DELETE CASCADE
 );
@@ -119,9 +118,6 @@ CREATE TABLE WaitingList (
     FOREIGN KEY (PatientId) REFERENCES Patient(Id)
 );
 
--- Add foreign key constraint to WaitingListAppointment
-ALTER TABLE WaitingListAppointment 
-ADD CONSTRAINT fk_Name FOREIGN KEY (WaitingListId) REFERENCES WaitingList(Id) ON DELETE RESTRICT;
 
 -- Insert data into Country table
 INSERT INTO Country (Name)
@@ -234,19 +230,19 @@ INSERT INTO PatientRecord (PatientId, DateOfAppointment, HospitalId, Reason, Not
 
 
 -- Insert data into WaitingList table
-INSERT INTO WaitingList (PatientId, TreatmentType, DateOfEntry, WLAppointmentId)
+INSERT INTO WaitingList (PatientId, TreatmentType, DateOfEntry)
 VALUES 
 -- TODO: allow multiple waiting list entries for 1 patient
-(1, 'Cardiology', '2024-12-01', 1),
-(2, 'Orthopedics', '2024-12-02', 2),
-(3, 'Dermatology', '2024-12-03', 3),
-(4, 'Neurology', '2024-12-04', 4),
-(5, 'Pediatrics', '2024-12-05', 5),
-(6, 'Oncology', '2024-12-06', 6),
-(7, 'Gastroenterology', '2024-12-07', 7),
-(8, 'Ophthalmology', '2024-12-08', 8),
-(9, 'Endocrinology', '2024-12-09', 9),
-(10, 'Pulmonology', '2024-12-10', 10);
+(1, 'Cardiology', '2024-12-01'),
+(2, 'Orthopedics', '2024-12-02'),
+(3, 'Dermatology', '2024-12-03'),
+(4, 'Neurology', '2024-12-04'),
+(5, 'Pediatrics', '2024-12-05'),
+(6, 'Oncology', '2024-12-06'),
+(7, 'Gastroenterology', '2024-12-07'),
+(8, 'Ophthalmology', '2024-12-08'),
+(9, 'Endocrinology', '2024-12-09'),
+(10, 'Pulmonology', '2024-12-10');
 
 -- Insert data into Appointment table
 INSERT INTO Appointment (PatientId, HospitalId, Date, Reason)
