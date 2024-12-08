@@ -225,7 +225,8 @@ INSERT INTO PatientRecord (PatientId, DateOfAppointment, HospitalId, Reason, Not
     (7, '2024-11-30', 5, 'High Blood Pressure', 'Routine follow-up for hypertension.', 'Blood Pressure Test', FALSE),
     (8, '2024-12-02', 6, 'Leg Injury', 'Suspected fracture, further evaluation needed.', 'X-ray', FALSE),
     (9, '2024-11-29', 7, 'Diabetes Management', 'Patient reported difficulty maintaining sugar levels.', 'Blood Sugar Test', FALSE),
-    (10, '2024-12-03', 8, 'Asthma Symptoms', 'Severe shortness of breath noted.', 'Pulmonary Function Test', TRUE);
+    (10, '2024-12-03', 8, 'Asthma Symptoms', 'Severe shortness of breath noted.', 'Pulmonary Function Test', TRUE)
+    (3, '2025-01-12', 1, 'General Checkup', 'Routine appointment, no issues.', 'Blood Test', FALSE);
 
 
 
