@@ -274,18 +274,18 @@ VALUES
 (10, 10);
 
 -- Insert data into WaitingListAppointment table
-INSERT INTO WaitingListAppointment (WaitingListId, AppointmentId)
+INSERT INTO WaitingListAppointment (AppointmentId)
 VALUES 
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 7),
-(8, 8),
-(9, 9),
-(10, 10);
+(1),
+(2),
+(3),
+(4),
+(5),
+(6),
+(7),
+(8),
+(9),
+(10);
 
 -- Basic Queries
 -- Query to find list of patients and hospitals where they have been treated
@@ -293,6 +293,13 @@ Select Patient.firstName as PatientFirstName, Patient.LastName as PatientLastNam
     FROM Patient
     JOIN Appointment ON Patient.id = Appointment.patientId
     JOIN Hospital on Appointment.hospitalId = Hospital.id;
+
+-- Query to find the firstName and lastName of patients whose appointments are scheduled after December 3, 2024
+SELECT Patient.FirstName, Patient.LastName, Appointment.Date 
+FROM Appointment 
+JOIN Patient ON Appointment.PatientId = Patient.Id 
+WHERE Appointment.Date > '2024-12-3';
+
 
 -- Medium Queries
 --Query that returns the most frequent appointment reasons per district
@@ -350,3 +357,20 @@ SELECT Hospital.name AS HospitalName, PatientRecord.reason AS MostCommonReason, 
                                     GROUP BY reason
                                     LIMIT 1)
     GROUP BY Hospital.id, PatientRecord.reason;
+
+-- Query to find the name of districts that have more appointments than the average district
+SELECT District.Name
+FROM District 
+JOIN Patient ON District.Id = Patient.DistrictId 
+JOIN Appointment ON Patient.Id = Appointment.PatientId 
+GROUP BY District.Id 
+HAVING COUNT(Appointment.Id) > (
+SELECT AVG(AppointmentCount) 
+FROM (
+    SELECT District.Id, COUNT(Appointment.Id) AS AppointmentCount 
+    FROM District 
+    JOIN Patient ON District.Id = Patient.DistrictId 
+    JOIN Appointment ON Patient.Id = Appointment.PatientId 
+    GROUP BY District.Id ) AS Districts
+);
+
