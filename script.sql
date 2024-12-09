@@ -1,3 +1,5 @@
+-- MySQL
+
 -- Create a new database
 CREATE DATABASE NHSDatabase;
 
